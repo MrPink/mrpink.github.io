@@ -86,58 +86,6 @@
             padding: 0 1.5rem;
         }
 
-        .about-section {
-            background: var(--card-background);
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        h1, h2, h3 {
-            font-family: var(--heading-font);
-            color: var(--primary-color);
-            line-height: 1.3;
-            margin-bottom: 1rem;
-        }
-
-        .about-section h2 {
-            font-size: 2rem;
-            color: var(--accent-color);
-        }
-
-        .about-text {
-            margin-bottom: 1.5rem;
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            flex-wrap: wrap;
-            margin-top: 1.5rem;
-        }
-
-        .social-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.75rem 1rem;
-            background-color: #f7f7f7;
-            border-radius: 0.5rem;
-            color: var(--accent-color);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.2s ease;
-        }
-
-        .social-link:hover,
-        .social-link:focus {
-            background-color: var(--accent-color);
-            color: white;
-            transform: translateY(-2px);
-            outline: none;
-        }
-
         .blog-section {
             display: grid;
             gap: 2rem;
@@ -219,22 +167,24 @@
                 display: block;
                 width: 100%;
             }
-
-            .social-links {
-                flex-direction: column;
-            }
-
-            .social-link {
-                width: 100%;
-                justify-content: center;
-            }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .post-card,
-            .social-link {
+            .post-card {
                 transition: none;
             }
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
     </style>
 </head>
@@ -245,41 +195,19 @@
         <nav role="navigation" aria-label="Main navigation">
             <a href="/" class="logo" aria-label="Will Pink's Blog">Will Pink</a>
             <div class="nav-links">
-                <a href="#home" aria-current="page">Home</a>
-                <a href="#about">About</a>
-                <a href="#blog">Blog</a>
+                <a href="/" aria-current="page">Home</a>
+                <a href="/about.html">About</a>
+                <a href="/#blog">Blog</a>
             </div>
         </nav>
     </header>
 
     <main id="main-content" role="main">
-        <section class="about-section" id="about" aria-labelledby="about-heading">
-            <h1 id="about-heading">About</h1>
-            <div class="about-text">
-                <p>Hi, I'm Will Pink. I'm a Principal Engineer focused on developer experience, cloud-native solutions, and infrastructure automation. Here, I share insights and experiences about building scalable systems, improving development workflows, and leveraging cutting-edge tools and technologies.</p>
-                <p>With expertise in Kubernetes, Terraform, and modern development practices, I explore topics ranging from infrastructure automation to AI-assisted development, always with a focus on practical, real-world applications.</p>
-            </div>
-            <nav class="social-links" aria-label="Social links">
-                <a href="https://github.com/MrPink" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
-                    GitHub
-                </a>
-                <a href="https://twitter.com/MrPink" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Twitter Profile">
-                    Twitter
-                </a>
-                <a href="https://www.linkedin.com/in/william-p-2b019a8/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
-                    LinkedIn
-                </a>
-                <a href="https://www.instagram.com/mrpinksss/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">
-                    Instagram
-                </a>
-            </nav>
-        </section>
-
         <section class="blog-section" id="blog" aria-labelledby="blog-heading">
-            <h2 id="blog-heading" class="sr-only">Blog Posts</h2>
+            <h1 id="blog-heading">Latest Posts</h1>
             
             <article class="post-card">
-                <h3 class="post-title">AI Pair Programming: A Game Changer for Developer Productivity</h3>
+                <h2 class="post-title">AI Pair Programming: A Game Changer for Developer Productivity</h2>
                 <div class="post-meta">
                     <time datetime="2024-12-14">Published on December 14, 2024</time>
                     <div class="tags">
@@ -294,7 +222,7 @@
             </article>
 
             <article class="post-card">
-                <h3 class="post-title">Leveraging LLMs for Automated Code Reviews</h3>
+                <h2 class="post-title">Leveraging LLMs for Automated Code Reviews</h2>
                 <div class="post-meta">
                     <time datetime="2024-12-13">Published on December 13, 2024</time>
                     <div class="tags">
@@ -309,7 +237,7 @@
             </article>
 
             <article class="post-card">
-                <h3 class="post-title">AI-Driven Infrastructure Automation</h3>
+                <h2 class="post-title">AI-Driven Infrastructure Automation</h2>
                 <div class="post-meta">
                     <time datetime="2024-12-12">Published on December 12, 2024</time>
                     <div class="tags">
