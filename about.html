@@ -6,7 +6,141 @@
     <meta name="description" content="About Will Pink - Lead Engineer focused on cloud-native solutions and developer experience">
     <title>About - Will Pink</title>
     <style>
-        /* ... [previous styles remain the same] ... */
+        :root {
+            --primary-color: #1a202c;
+            --secondary-color: #2d3748;
+            --accent-color: #4834d4;
+            --background-color: #f8fafc;
+            --card-background: #ffffff;
+            --link-hover: #6c5ce7;
+            --max-width: 65ch;
+            --heading-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --body-font: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--body-font);
+            line-height: 1.6;
+            color: var(--primary-color);
+            background-color: var(--background-color);
+            font-size: 1.125rem;
+        }
+
+        header {
+            background-color: var(--card-background);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        nav {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+        }
+
+        .logo {
+            font-family: var(--heading-font);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            transition: background-color 0.2s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a:focus {
+            color: var(--accent-color);
+            background-color: rgba(72, 52, 212, 0.1);
+            outline: none;
+        }
+
+        main {
+            max-width: var(--max-width);
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .about-section {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, h2, h3 {
+            font-family: var(--heading-font);
+            color: var(--primary-color);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+        }
+
+        .about-section h1 {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+
+        .about-text {
+            margin-bottom: 1.5rem;
+        }
+
+        .about-text p + p {
+            margin-top: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+            background-color: #f7f7f7;
+            border-radius: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover,
+        .social-link:focus {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+            outline: none;
+        }
 
         .github-activity {
             margin-top: 2rem;
@@ -30,12 +164,67 @@
             margin-top: 1rem;
         }
 
-        /* Ensures the GitHub calendar is responsive */
         @media (max-width: 640px) {
+            body {
+                font-size: 1rem;
+            }
+
+            nav {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                gap: 0.5rem;
+            }
+
+            .nav-links a {
+                display: block;
+                width: 100%;
+            }
+
+            .social-links {
+                flex-direction: column;
+            }
+
+            .social-link {
+                width: 100%;
+                justify-content: center;
+            }
+
             .github-calendar {
                 transform: scale(0.8);
                 transform-origin: 0 0;
             }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .social-link {
+                transition: none;
+            }
+        }
+
+        footer {
+            text-align: center;
+            padding: 2rem;
+            color: var(--secondary-color);
+            font-size: 0.875rem;
+            margin-top: 4rem;
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
     </style>
 </head>
@@ -75,7 +264,6 @@
 
         <section class="github-activity" aria-labelledby="github-heading">
             <h2 id="github-heading">GitHub Activity</h2>
-            <!-- GitHub Contribution Calendar -->
             <div class="github-calendar">
                 <img src="https://ghchart.rshah.org/4834d4/MrPink" alt="Will Pink's GitHub Contributions" style="width: 100%; height: auto;" />
             </div>
@@ -85,6 +273,5 @@
     <footer role="contentinfo">
         <p>&copy; 2024 Will Pink. All rights reserved.</p>
     </footer>
-
 </body>
 </html>
