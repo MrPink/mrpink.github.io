@@ -6,8 +6,8 @@
     <meta name="description" content="Will Pink's blog about engineering, cloud-native technologies, and developer experience">
     <title>Will Pink - Engineering & Tech Insights</title>
     <style>
-        /* Previous styles remain the same */
-
+        /* [Previous styles remain the same] */
+        
         .tag-filters {
             margin-bottom: 2rem;
             display: flex;
@@ -16,37 +16,26 @@
         }
 
         .tag-filter {
-            display: inline-flex;
-            align-items: center;
+            display: inline-block;
             padding: 0.5rem 1rem;
-            background-color: var(--background-color);
-            border: 1px solid var(--accent-color);
-            color: var(--accent-color);
+            background-color: #f7f7f7;
+            color: var(--secondary-color);
+            border: none;
             border-radius: 2rem;
             font-size: 0.875rem;
             font-weight: 500;
             cursor: pointer;
             transition: all 0.2s ease;
-            user-select: none;
         }
 
         .tag-filter:hover {
             background-color: rgba(72, 52, 212, 0.1);
+            color: var(--accent-color);
         }
 
         .tag-filter.active {
             background-color: var(--accent-color);
             color: white;
-        }
-
-        .tag-filter-count {
-            margin-left: 0.5rem;
-            font-size: 0.75rem;
-            opacity: 0.8;
-        }
-
-        .post-card {
-            transition: opacity 0.3s ease, transform 0.2s ease;
         }
 
         .post-card.hidden {
@@ -59,18 +48,32 @@
             color: var(--secondary-color);
             background: var(--card-background);
             border-radius: 1rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-posts.hidden {
             display: none;
         }
 
-        .no-posts.visible {
-            display: block;
+        .clear-filters {
+            margin-left: auto;
+            padding: 0.5rem 1rem;
+            color: var(--accent-color);
+            background: none;
+            border: 1px solid currentColor;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
         }
 
-        @media (prefers-reduced-motion: reduce) {
-            .tag-filter,
-            .post-card {
-                transition: none;
-            }
+        .clear-filters:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .clear-filters.hidden {
+            display: none;
         }
     </style>
 </head>
@@ -93,24 +96,22 @@
             <h1 id="blog-heading">Latest Posts</h1>
             
             <div class="tag-filters" role="group" aria-label="Filter posts by tag">
-                <button class="tag-filter active" data-tag="all" aria-pressed="true">
-                    All Posts
-                    <span class="tag-filter-count"></span>
-                </button>
+                <!-- Tags will be dynamically inserted here -->
+                <button class="clear-filters hidden" aria-label="Clear all filters">Clear filters</button>
             </div>
 
-            <div class="no-posts">
-                No posts found for the selected tag.
+            <div class="no-posts hidden">
+                <p>No posts match the selected filters.</p>
             </div>
-
+            
             <article class="post-card" data-tags="ai,dx,development">
                 <h2 class="post-title">AI Pair Programming: A Game Changer for Developer Productivity</h2>
                 <div class="post-meta">
                     <time datetime="2024-12-14">Published on December 14, 2024</time>
                     <div class="tags">
-                        <span class="tag">AI</span>
-                        <span class="tag">DX</span>
-                        <span class="tag">Development</span>
+                        <span class="tag" data-tag="ai">AI</span>
+                        <span class="tag" data-tag="dx">DX</span>
+                        <span class="tag" data-tag="development">Development</span>
                     </div>
                 </div>
                 <p class="post-excerpt">
@@ -123,9 +124,9 @@
                 <div class="post-meta">
                     <time datetime="2024-12-13">Published on December 13, 2024</time>
                     <div class="tags">
-                        <span class="tag">AI</span>
-                        <span class="tag">DX</span>
-                        <span class="tag">SRE</span>
+                        <span class="tag" data-tag="ai">AI</span>
+                        <span class="tag" data-tag="dx">DX</span>
+                        <span class="tag" data-tag="sre">SRE</span>
                     </div>
                 </div>
                 <p class="post-excerpt">
@@ -138,9 +139,9 @@
                 <div class="post-meta">
                     <time datetime="2024-12-12">Published on December 12, 2024</time>
                     <div class="tags">
-                        <span class="tag">AI</span>
-                        <span class="tag">Terraform</span>
-                        <span class="tag">Kubernetes</span>
+                        <span class="tag" data-tag="ai">AI</span>
+                        <span class="tag" data-tag="terraform">Terraform</span>
+                        <span class="tag" data-tag="kubernetes">Kubernetes</span>
                     </div>
                 </div>
                 <p class="post-excerpt">
@@ -156,62 +157,82 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const posts = document.querySelectorAll('.post-card');
-            const tagFiltersContainer = document.querySelector('.tag-filters');
-            const noPostsMessage = document.querySelector('.no-posts');
-            
-            // Collect all unique tags
+            // Get all unique tags
             const allTags = new Set();
-            posts.forEach(post => {
+            document.querySelectorAll('.post-card').forEach(post => {
                 const tags = post.dataset.tags.split(',');
-                tags.forEach(tag => allTags.add(tag.toLowerCase()));
+                tags.forEach(tag => allTags.add(tag));
             });
 
-            // Create tag filters
-            const tagCounts = {};
+            // Create filter buttons
+            const tagFilters = document.querySelector('.tag-filters');
             allTags.forEach(tag => {
-                const count = Array.from(posts).filter(post => 
-                    post.dataset.tags.toLowerCase().split(',').includes(tag)
-                ).length;
-                
                 const button = document.createElement('button');
                 button.className = 'tag-filter';
                 button.setAttribute('data-tag', tag);
                 button.setAttribute('aria-pressed', 'false');
-                button.innerHTML = `${tag.toUpperCase()} <span class="tag-filter-count">(${count})</span>`;
-                tagFiltersContainer.appendChild(button);
+                button.textContent = tag.toUpperCase();
+                tagFilters.appendChild(button);
             });
 
-            // Update "All Posts" count
-            const allPostsCount = posts.length;
-            document.querySelector('[data-tag="all"] .tag-filter-count').textContent = ` (${allPostsCount})`;
+            // Get UI elements
+            const posts = document.querySelectorAll('.post-card');
+            const noPostsMessage = document.querySelector('.no-posts');
+            const clearFiltersButton = document.querySelector('.clear-filters');
+            const filterButtons = document.querySelectorAll('.tag-filter');
+            
+            // Track active filters
+            const activeFilters = new Set();
 
-            // Filter functionality
-            tagFiltersContainer.addEventListener('click', (e) => {
-                if (!e.target.closest('.tag-filter')) return;
-                
-                const filterButton = e.target.closest('.tag-filter');
-                const selectedTag = filterButton.dataset.tag;
-                
-                // Update active states
-                document.querySelectorAll('.tag-filter').forEach(btn => {
-                    btn.classList.remove('active');
-                    btn.setAttribute('aria-pressed', 'false');
-                });
-                filterButton.classList.add('active');
-                filterButton.setAttribute('aria-pressed', 'true');
-
-                // Filter posts
+            // Filter posts based on active filters
+            function filterPosts() {
                 let visiblePosts = 0;
+                
                 posts.forEach(post => {
-                    const postTags = post.dataset.tags.toLowerCase().split(',');
-                    const shouldShow = selectedTag === 'all' || postTags.includes(selectedTag);
+                    const postTags = post.dataset.tags.split(',');
+                    const shouldShow = activeFilters.size === 0 || 
+                                    [...activeFilters].every(filter => postTags.includes(filter));
+                    
                     post.classList.toggle('hidden', !shouldShow);
                     if (shouldShow) visiblePosts++;
                 });
 
-                // Toggle no posts message
-                noPostsMessage.classList.toggle('visible', visiblePosts === 0);
+                // Show/hide no posts message
+                noPostsMessage.classList.toggle('hidden', visiblePosts > 0);
+                
+                // Show/hide clear filters button
+                clearFiltersButton.classList.toggle('hidden', activeFilters.size === 0);
+            }
+
+            // Handle filter button clicks
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tag = button.dataset.tag;
+                    const isActive = activeFilters.has(tag);
+
+                    // Toggle filter
+                    if (isActive) {
+                        activeFilters.delete(tag);
+                        button.classList.remove('active');
+                        button.setAttribute('aria-pressed', 'false');
+                    } else {
+                        activeFilters.add(tag);
+                        button.classList.add('active');
+                        button.setAttribute('aria-pressed', 'true');
+                    }
+
+                    filterPosts();
+                });
+            });
+
+            // Handle clear filters
+            clearFiltersButton.addEventListener('click', () => {
+                activeFilters.clear();
+                filterButtons.forEach(button => {
+                    button.classList.remove('active');
+                    button.setAttribute('aria-pressed', 'false');
+                });
+                filterPosts();
             });
         });
     </script>
