@@ -1,105 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Will Pink's blog about engineering, cloud-native technologies, and developer experience">
-    <title>Will Pink - Engineering & Tech Insights</title>
-    <style>
-        /* [Previous styles remain the same] */
+<!-- Previous head content remains the same -->
 
-        .search-container {
-            margin-bottom: 2rem;
-            width: 100%;
-        }
+<style>
+    /* Add to your existing styles */
+    .search-container {
+        margin-bottom: 2rem;
+        width: 100%;
+    }
 
-        .search-input {
-            width: 100%;
-            padding: 1rem;
-            border: 2px solid #e2e8f0;
-            border-radius: 0.5rem;
-            font-size: 1rem;
-            background-color: var(--card-background);
-            color: var(--primary-color);
-            transition: border-color 0.2s ease;
-        }
+    .search-input {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e2e8f0;
+        border-radius: 0.5rem;
+        font-size: 1rem;
+        background-color: var(--card-background);
+        color: var(--primary-color);
+        transition: border-color 0.2s ease;
+    }
 
-        .search-input:focus {
-            outline: none;
-            border-color: var(--accent-color);
-        }
+    .search-input:focus {
+        outline: none;
+        border-color: var(--accent-color);
+    }
 
-        .search-input::placeholder {
-            color: var(--secondary-color);
-            opacity: 0.7;
-        }
+    .search-input::placeholder {
+        color: var(--secondary-color);
+        opacity: 0.7;
+    }
 
-        .no-results {
-            text-align: center;
-            padding: 2rem;
-            color: var(--secondary-color);
-            background: var(--card-background);
-            border-radius: 1rem;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            display: none;
-        }
-    </style>
-</head>
-<body>
-    <!-- [Previous header content remains the same] -->
+    .no-results {
+        text-align: center;
+        padding: 2rem;
+        color: var(--secondary-color);
+        background: var(--card-background);
+        border-radius: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        display: none;
+    }
+</style>
 
-    <main id="main-content" role="main">
-        <section class="blog-section" aria-labelledby="page-heading">
-            <h1 id="page-heading">Latest Posts</h1>
+<!-- Add this after your h1 tag -->
+<div class="search-container">
+    <input type="search" 
+           class="search-input" 
+           placeholder="Search posts..." 
+           aria-label="Search posts"
+           id="searchInput">
+</div>
+
+<div class="no-results" id="noResults">
+    No posts match your search.
+</div>
+
+<!-- Add this script before closing body tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const posts = document.querySelectorAll('.post-card');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        let hasResults = false;
+
+        posts.forEach(post => {
+            const title = post.querySelector('.post-title').textContent.toLowerCase();
+            const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
+            const tags = post.querySelector('.tags').textContent.toLowerCase();
             
-            <div class="search-container">
-                <input type="search" 
-                       class="search-input" 
-                       placeholder="Search posts..." 
-                       aria-label="Search posts"
-                       id="searchInput">
-            </div>
-
-            <div class="no-results" id="noResults">
-                No posts match your search.
-            </div>
-            
-            <!-- [Previous post cards content remains the same] -->
-        </section>
-    </main>
-
-    <footer role="contentinfo">
-        <p>&copy; 2024 Will Pink. All rights reserved.</p>
-    </footer>
-
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchInput = document.getElementById('searchInput');
-        const posts = document.querySelectorAll('.post-card');
-        const noResults = document.getElementById('noResults');
-
-        searchInput.addEventListener('input', function(e) {
-            const searchTerm = e.target.value.toLowerCase();
-            let hasResults = false;
-
-            posts.forEach(post => {
-                const title = post.querySelector('.post-title').textContent.toLowerCase();
-                const excerpt = post.querySelector('.post-excerpt').textContent.toLowerCase();
-                const tags = post.querySelector('.tags').textContent.toLowerCase();
-                
-                if (title.includes(searchTerm) || 
-                    excerpt.includes(searchTerm) || 
-                    tags.includes(searchTerm)) {
-                    post.style.display = '';
-                    hasResults = true;
-                } else {
-                    post.style.display = 'none';
-                }
-            });
-
-            noResults.style.display = hasResults ? 'none' : 'block';
+            if (title.includes(searchTerm) || 
+                excerpt.includes(searchTerm) || 
+                tags.includes(searchTerm)) {
+                post.style.display = '';
+                hasResults = true;
+            } else {
+                post.style.display = 'none';
+            }
         });
+
+        noResults.style.display = hasResults ? 'none' : 'block';
     });
-    </script>
-</body>
-</html>
+});
+</script>
