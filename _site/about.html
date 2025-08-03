@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kubernetes and Cloud-Native Technologies">
-    <title>Will Pink</title>
+    <meta name="description" content="About Will Pink - Lead Engineer focused on cloud-native solutions and developer experience">
+    <title>About - Will Pink</title>
     <style>
         :root {
             --primary-color: #1a202c;
@@ -91,10 +91,12 @@
             padding: 0 1.5rem;
         }
 
-        .blog-section {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
+        .about-section {
+            background: var(--card-background);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         h1 {
@@ -104,53 +106,60 @@
             margin-bottom: 1.5rem;
         }
 
-        .post-card {
+        .about-text {
+            margin-bottom: 2rem;
+        }
+
+        .about-text p + p {
+            margin-top: 1rem;
+        }
+
+        .social-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem;
+            background-color: #f7f7f7;
+            border-radius: 0.5rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .social-link:hover,
+        .social-link:focus {
+            background-color: var(--accent-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .github-activity {
+            margin-top: 2rem;
             background: var(--card-background);
             border-radius: 1rem;
             padding: 2rem;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s ease;
         }
 
-        .post-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .post-title {
+        .github-activity h2 {
             font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: var(--primary-color);
-            font-family: var(--heading-font);
-            font-weight: 700;
-        }
-
-        .post-meta {
-            font-size: 0.875rem;
-            color: var(--secondary-color);
-            margin-bottom: 1rem;
-        }
-
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-top: 0.75rem;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background-color: rgba(72, 52, 212, 0.1);
             color: var(--accent-color);
-            border-radius: 2rem;
-            font-size: 0.875rem;
-            font-weight: 500;
+            margin-bottom: 1.5rem;
         }
 
-        .post-excerpt {
-            color: var(--secondary-color);
+        .github-calendar {
+            width: 100%;
+            border: none;
+            overflow: hidden;
             margin-top: 1rem;
-            line-height: 1.7;
         }
 
         footer {
@@ -191,13 +200,18 @@
                 width: 100%;
             }
 
-            .post-card {
-                padding: 1.5rem;
+            .social-links {
+                grid-template-columns: 1fr;
+            }
+
+            .social-link {
+                width: 100%;
+                justify-content: center;
             }
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .post-card,
+            .social-link,
             .logo,
             .nav-links a {
                 transition: none;
@@ -219,41 +233,47 @@
 </head>
 <body>
     <a href="#main-content" class="sr-only">Skip to main content</a>
-
+    
     <header role="banner">
         <nav role="navigation" aria-label="Main navigation">
             <a href="/" class="logo" aria-label="Will Pink's Blog">Will Pink</a>
             <div class="nav-links">
-                <a href="/" aria-current="page">Home</a>
-                <a href="/about.html">About</a>
+                <a href="/">Home</a>
+                <a href="/about.html" aria-current="page">About</a>
             </div>
         </nav>
     </header>
 
     <main id="main-content" role="main">
-        <section class="blog-section" aria-labelledby="page-heading">
+        <section class="about-section" aria-labelledby="about-heading">
+            <h1 id="about-heading">About Me</h1>
+            <div class="about-text">
+                <p>Hi, I'm Will Pink. I'm a Lead Engineer focused on developer experience, cloud-native solutions, and infrastructure automation. Here, I share insights and experiences about building scalable systems, improving development workflows, and leveraging cutting-edge tools and technologies.</p>
+                <p>With expertise in Kubernetes, Terraform, and modern development practices, I explore topics ranging from infrastructure automation to AI-assisted development, always with a focus on practical, real-world applications.</p>
+            </div>
+            <nav class="social-links" aria-label="Social links">
+                <a href="https://github.com/MrPink" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="GitHub Profile">
+                    GitHub
+                </a>
+                <a href="https://www.linkedin.com/in/william-p-2b019a8/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn Profile">
+                    LinkedIn
+                </a>
+                <a href="https://www.instagram.com/mrpinksss/" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram Profile">
+                    Instagram
+                </a>
+            </nav>
+        </section>
 
-            <article class="post-card">
-                <h2 class="post-title">AI Pair Programming: A Game Changer for Developer Productivity</h2>
-                <div class="post-meta">
-                    <time datetime="2024-12-14">Published on December 14, 2024</time>
-                    <div class="tags">
-                        <span class="tag">AI</span>
-                        <span class="tag">DX</span>
-                        <span class="tag">Development</span>
-                    </div>
-                </div>
-                <p class="post-excerpt">
-                    Learn how AI pair programming is transforming the way we write code. Explore the benefits, best practices, and real-world examples of working with AI coding assistants.
-                </p>
-            </article>
-
-
+        <section class="github-activity" aria-labelledby="github-heading">
+            <h2 id="github-heading">GitHub Activity</h2>
+            <div class="github-calendar">
+                <img src="https://ghchart.rshah.org/4834d4/MrPink" alt="Will Pink's GitHub Contributions" style="width: 100%; height: auto;" />
+            </div>
         </section>
     </main>
 
     <footer role="contentinfo">
-        <p>&copy; 2025 Will Pink. All rights reserved.</p>
+        <p>&copy; 2024 Will Pink. All rights reserved.</p>
     </footer>
 </body>
 </html>
