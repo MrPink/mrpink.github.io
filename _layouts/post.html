@@ -1,15 +1,29 @@
 ---
 layout: default
+type: article
 ---
-<article class="post">
-    <h1>{{ page.title }}</h1>
-    <div class="post-meta">
-        {{ page.date | date: "%B %d, %Y" }}
-        {% if page.categories %}
-            {% for category in page.categories %}
-                <span class="tag">{{ category }}</span>
-            {% endfor %}
-        {% endif %}
+<article class="post-content" itemscope itemtype="http://schema.org/BlogPosting">
+    <header>
+        <h1 itemprop="headline">{{ page.title }}</h1>
+        <div class="post-meta">
+            <time datetime="{{ page.date | date: '%Y-%m-%d' }}" itemprop="datePublished">
+                {{ page.date | date: "%B %d, %Y" }}
+            </time>
+            {% if page.tags %}
+            <div class="tags" itemprop="keywords">
+                {% for tag in page.tags %}
+                <span class="tag">{{ tag }}</span>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    </header>
+
+    <div itemprop="articleBody">
+        {{ content }}
     </div>
-    {{ content }}
+
+    <footer class="post-footer">
+        <a href="/" class="back-link">&larr; Back to posts</a>
+    </footer>
 </article>

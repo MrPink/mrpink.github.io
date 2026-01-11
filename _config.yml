@@ -1,6 +1,17 @@
+title: Will Pink
+description: Adventures in Containers, Cloud and everything in between
+url: https://mrpink.github.io
+author: Will Pink
+
 markdown: kramdown
 theme: null
+
 plugins:
-- jekyll-feed # add this line to the plugins list if you already have one
-title: [Mr Pink]
-description: [Adventures in Containers, Cloud and everything inbetween]
+  - jekyll-feed
+
+# SEO defaults
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/images/og-default.png

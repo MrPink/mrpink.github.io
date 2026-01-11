@@ -3,10 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ page.title }} - {{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    <title>{% if page.title %}{{ page.title }} — {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
+
+    <!-- Preconnect for fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://ghchart.rshah.org" crossorigin>
+
+    <!-- Open Graph / Social -->
+    <meta property="og:type" content="{{ page.type | default: 'website' }}">
+    <meta property="og:url" content="{{ page.url | absolute_url }}">
+    <meta property="og:title" content="{{ page.title | default: site.title }}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:site_name" content="{{ site.title }}">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ page.title | default: site.title }}">
+    <meta name="twitter:description" content="{{ page.description | default: site.description }}">
+
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#0d0f0e" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#faf8f5" media="(prefers-color-scheme: light)">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="{{ page.url | absolute_url }}">
+
+    <!-- RSS Feed -->
+    <link rel="alternate" type="application/rss+xml" title="{{ site.title }}" href="{{ '/feed.xml' | absolute_url }}">
+
     <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
-    {{ content }}
+    <a href="#main-content" class="sr-only">Skip to main content</a>
+
+    <header role="banner">
+        <nav role="navigation" aria-label="Main navigation">
+            <a href="/" class="logo" aria-label="{{ site.title }} - Home">{{ site.title }}</a>
+            <div class="nav-links">
+                <a href="/"{% if page.url == '/' %} aria-current="page"{% endif %}>Posts</a>
+                <a href="/about.html"{% if page.url == '/about.html' %} aria-current="page"{% endif %}>About</a>
+            </div>
+        </nav>
+    </header>
+
+    <main id="main-content" role="main">
+        {{ content }}
+    </main>
+
+    <footer role="contentinfo">
+        <p>&copy; {{ 'now' | date: '%Y' }} {{ site.author }}</p>
+    </footer>
 </body>
 </html>
