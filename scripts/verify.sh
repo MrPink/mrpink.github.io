@@ -11,4 +11,14 @@ test -f public/about/index.html      || fail "about page missing"
 test -f public/index.json            || fail "search index missing"
 test -f public/index.xml             || fail "RSS feed missing"
 
+POST=public/posts/hello-world/index.html
+test -f "$POST"                                  || fail "sample post missing"
+grep -qE '<pre class="?mermaid' "$POST"                || fail "mermaid block not rendered"
+grep -q 'mermaid@' "$POST"                       || fail "mermaid script not loaded on diagram page"
+! grep -q 'mermaid' public/about/index.html      || fail "mermaid loaded on page without diagram"
+! test -e public/posts/draft-example             || fail "draft post published"
+grep -q 'Hello, world' public/index.xml          || fail "sample post missing from RSS"
+grep -q 'og:title' "$POST"                       || fail "og:title missing"
+grep -qE 'class="?chroma' "$POST"                  || fail "syntax highlighting missing"
+
 echo "OK"
