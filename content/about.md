@@ -2,6 +2,8 @@
 title: "About"
 hideMeta: true
 ShowToc: false
+hiddenInRss: true
+searchHidden: true
 ---
 
 <!-- TODO: replace with your own bio -->
