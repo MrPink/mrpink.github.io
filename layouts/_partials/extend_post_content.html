@@ -8,7 +8,24 @@
     blocks.forEach((el) => el.dataset.src = el.textContent);
     const render = async () => {
       blocks.forEach((el) => { el.removeAttribute("data-processed"); el.textContent = el.dataset.src; });
-      mermaid.initialize({ startOnLoad: false, theme: isDark() ? "dark" : "default" });
+      const css = getComputedStyle(document.documentElement);
+      const v = (name) => css.getPropertyValue(name).trim();
+      mermaid.initialize({
+        startOnLoad: false,
+        theme: "base",
+        darkMode: isDark(),
+        themeVariables: {
+          fontFamily: v("--font-ui"),
+          fontSize: "15px",
+          background: v("--paper"),
+          primaryColor: v("--paper"),
+          primaryTextColor: v("--ink"),
+          primaryBorderColor: v("--signal"),
+          lineColor: v("--muted"),
+          secondaryColor: v("--code-bg"),
+          tertiaryColor: v("--code-bg"),
+        },
+      });
       await mermaid.run({ nodes: blocks });
     };
     render();

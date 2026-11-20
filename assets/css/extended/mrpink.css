@@ -1,0 +1,539 @@
+/* mrpink: signal pink on cool ink. Loaded after PaperMod's core CSS. */
+
+/* ---------- Fonts (self-hosted, OFL; see /fonts/LICENSE-*.txt) ---------- */
+@font-face {
+  font-family: "Schibsted Grotesk";
+  src: url("/fonts/schibsted-grotesk-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 400 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Literata";
+  src: url("/fonts/literata-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Literata";
+  src: url("/fonts/literata-latin-wght-italic.woff2") format("woff2-variations");
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("/fonts/jetbrains-mono-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 100 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- Tokens ---------- */
+:root {
+  --paper: #EEF1F5;
+  --ink: #1A2033;
+  --muted: #5B6478;
+  --rule: #C9D0DC;
+  --signal: #D6336C;
+  --signal-soft: rgba(214, 51, 108, 0.14);
+  --code-ink: #1A2033;
+
+  --font-ui: "Schibsted Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Literata", Georgia, serif;
+  --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --main-width: 760px;
+  --nav-width: 1040px;
+  --date-col: 8.5rem;
+  --radius: 4px;
+
+  /* PaperMod variables mapped onto the palette */
+  --theme: var(--paper);
+  --entry: var(--paper);
+  --primary: var(--ink);
+  --secondary: var(--muted);
+  --tertiary: var(--rule);
+  --content: var(--ink);
+  --border: var(--rule);
+  --code-bg: #DFE4EC;
+  --code-block-bg: var(--code-ink);
+}
+
+:root[data-theme="dark"] {
+  --paper: #121626;
+  --ink: #E6E9F0;
+  --muted: #98A0B3;
+  --rule: #2C3350;
+  --signal: #FF6F9E;
+  --signal-soft: rgba(255, 111, 158, 0.16);
+  --code-ink: #0B0E1A;
+  --code-bg: #1E2438;
+
+  /* PaperMod's dark block is as specific as this one, so re-map here too */
+  --theme: var(--paper);
+  --entry: var(--paper);
+  --primary: var(--ink);
+  --secondary: var(--muted);
+  --tertiary: var(--rule);
+  --content: var(--ink);
+  --border: var(--rule);
+  --code-block-bg: var(--code-ink);
+}
+
+/* ---------- Base ---------- */
+body {
+  font-family: var(--font-ui);
+  background: var(--paper);
+  color: var(--ink);
+  font-feature-settings: "kern", "liga";
+}
+
+.list,
+[data-theme="dark"] .list {
+  background: var(--paper);
+}
+
+::selection {
+  background: var(--signal);
+  color: #fff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* Thin signal line across the top of every page */
+body::before {
+  content: "";
+  display: block;
+  height: 3px;
+  background: var(--signal);
+}
+
+/* ---------- Header ---------- */
+.header-nav {
+  line-height: 4.5rem;
+}
+
+.logo a {
+  font-size: 1.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+#menu a {
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+#menu .active {
+  border-bottom: none;
+  color: var(--signal);
+}
+
+/* ---------- Home intro ---------- */
+.home-info {
+  min-height: 0;
+  margin: 3.5rem 0 3rem;
+}
+
+.home-info .entry-header {
+  display: block;
+  -webkit-line-clamp: unset;
+}
+
+.home-info .entry-header h1 {
+  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  max-width: 16ch;
+}
+
+.home-info .entry-content {
+  margin-top: 1.25rem;
+  max-width: 46ch;
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  color: var(--muted);
+}
+
+.home-info .entry-footer {
+  margin-top: 1.25rem;
+}
+
+.social-icons a svg {
+  width: 22px;
+  height: 22px;
+}
+
+.social-icons a:hover {
+  color: var(--signal);
+}
+
+/* ---------- Post list as a timeline ---------- */
+.post-entry {
+  display: grid;
+  grid-template-columns: var(--date-col) 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "meta header"
+    "meta content";
+  column-gap: 2rem;
+  align-items: start;
+  margin: 0;
+  padding: 0 0 2.5rem;
+  background: none;
+  border: none;
+  border-radius: 0;
+  transition: none;
+}
+
+.post-entry:hover,
+.post-entry:focus-within {
+  transform: none;
+}
+
+/* The rail */
+.post-entry::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--date-col) + 1rem);
+  width: 1px;
+  background: var(--rule);
+}
+
+/* The marker */
+.post-entry::after {
+  content: "";
+  position: absolute;
+  top: 0.55rem;
+  left: calc(var(--date-col) + 1rem - 5px);
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--paper);
+  border: 2px solid var(--signal);
+  box-sizing: border-box;
+}
+
+/* Newest post gets a filled marker */
+.post-entry:not(.post-entry ~ .post-entry)::after,
+.post-entry:hover::after,
+.post-entry:focus-within::after {
+  background: var(--signal);
+}
+
+.post-entry .entry-header {
+  grid-area: header;
+  padding-left: 0.5rem;
+}
+
+.post-entry .entry-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+.post-entry:hover .entry-header h2 {
+  color: var(--signal);
+}
+
+.post-entry .entry-content {
+  grid-area: content;
+  padding-left: 0.5rem;
+  margin: 0.5rem 0 0;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--muted);
+  -webkit-line-clamp: 3;
+}
+
+.post-entry .entry-footer {
+  grid-area: meta;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding-top: 0.3rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-align: right;
+}
+
+.post-entry .entry-footer time {
+  color: var(--ink);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.entry-hint {
+  color: var(--signal);
+}
+
+/* ---------- Single post ---------- */
+.post-header {
+  margin: 2.5rem 0 2.5rem;
+}
+
+.post-title {
+  font-size: clamp(2rem, 5vw, 2.85rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+}
+
+.post-description {
+  font-family: var(--font-body);
+  color: var(--muted);
+}
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1.25rem;
+  margin-top: 1rem;
+  font-size: 0.9375rem;
+  color: var(--muted);
+}
+
+.post-meta time {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.breadcrumbs {
+  font-size: 0.875rem;
+}
+
+.toc {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.toc details summary {
+  font-weight: 600;
+}
+
+.post-content {
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: var(--ink);
+}
+
+.post-content p,
+.post-content li {
+  max-width: 68ch;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+  font-family: var(--font-ui);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.post-content h2 {
+  font-size: 1.75rem;
+  font-weight: 800;
+  margin: 3rem 0 1rem;
+}
+
+.post-content h3 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 2.25rem 0 0.75rem;
+}
+
+.post-content a,
+.toc a:hover {
+  box-shadow: none;
+  text-decoration: underline;
+  text-decoration-color: var(--signal);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
+}
+
+.post-content a:hover {
+  color: var(--signal);
+}
+
+.post-content strong {
+  font-weight: 700;
+}
+
+.post-content blockquote {
+  border-inline-start: 3px solid var(--signal);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.post-content table {
+  font-family: var(--font-ui);
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) th {
+  border-bottom: 2px solid var(--ink);
+  font-weight: 700;
+}
+
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) td,
+.post-content table:not(.highlighttable, .highlight table, .gist .highlight) th {
+  border-color: var(--rule);
+  padding: 0.6rem 0.75rem;
+}
+
+/* Code */
+.post-content code,
+.post-content pre code,
+.highlight pre {
+  font-family: var(--font-code);
+}
+
+.post-content code {
+  font-size: 0.85em;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  background: var(--code-bg);
+}
+
+.post-content pre code {
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.post-content .highlight,
+.post-content pre {
+  border-radius: var(--radius);
+}
+
+.post-content .highlight {
+  border-inline-start: 3px solid var(--signal);
+}
+
+.copy-code {
+  font-family: var(--font-ui);
+}
+
+/* Mermaid diagrams sit on the page, not in a code block */
+.post-content pre.mermaid {
+  background: none;
+  border: 1px solid var(--rule);
+  padding: 1.25rem;
+  text-align: center;
+}
+
+/* Tags */
+.post-tags a {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font-size: 0.875rem;
+}
+
+.post-tags a:hover {
+  background: var(--signal-soft);
+  border-color: var(--signal);
+}
+
+/* Prev/next */
+.paginav {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+}
+
+.paginav a:hover {
+  background: var(--signal-soft);
+}
+
+/* ---------- Taxonomy, search, footer ---------- */
+.terms-tags a {
+  background: none;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+}
+
+.terms-tags a:hover {
+  background: var(--signal-soft);
+  border-color: var(--signal);
+}
+
+#searchbox input {
+  background: var(--paper);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius);
+  font-family: var(--font-ui);
+}
+
+#searchbox input:focus {
+  border-color: var(--signal);
+}
+
+#searchResults .focus {
+  box-shadow: 0 0 0 2px var(--signal);
+}
+
+.footer {
+  font-size: 0.8125rem;
+}
+
+/* ---------- Small screens: rail on the left, date above title ---------- */
+@media (max-width: 640px) {
+  .post-entry {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-template-areas:
+      "meta"
+      "header"
+      "content";
+    padding-left: 1.75rem;
+  }
+
+  .post-entry::before {
+    left: 0.3rem;
+  }
+
+  .post-entry::after {
+    left: calc(0.3rem - 5px);
+    top: 0.35rem;
+  }
+
+  .post-entry .entry-footer {
+    flex-direction: row;
+    gap: 1rem;
+    align-items: baseline;
+    text-align: left;
+    padding: 0 0 0.35rem;
+  }
+
+  .post-entry .entry-header,
+  .post-entry .entry-content {
+    padding-left: 0;
+  }
+
+  .post-content {
+    font-size: 1.0625rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    scroll-behavior: auto !important;
+  }
+}

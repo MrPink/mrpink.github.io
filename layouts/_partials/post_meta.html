@@ -1,0 +1,7 @@
+{{- /* Date and reading time as separate elements; spacing comes from CSS, not separator characters. */ -}}
+{{- if not .Date.IsZero }}
+<time datetime="{{ .Date | time.Format "2006-01-02" }}">{{ .Date | time.Format "2 Jan 2006" }}</time>
+{{- end }}
+{{- if .Param "ShowReadingTime" }}
+<span class="read-time">{{ .ReadingTime }} min read</span>
+{{- end }}
