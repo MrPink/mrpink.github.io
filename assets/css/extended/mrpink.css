@@ -44,9 +44,11 @@
   --font-body: "Literata", Georgia, serif;
   --font-code: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --main-width: 760px;
-  --nav-width: 1040px;
-  --date-col: 8.5rem;
+  /* One column for header, intro, list and posts: ~75 characters of body text */
+  --main-width: 720px;
+  --nav-width: 720px;
+  --date-col: 7rem;
+  --rail-x: -1.5rem; /* timeline rail, measured from the text edge */
   --radius: 4px;
 
   /* PaperMod variables mapped onto the palette */
@@ -138,7 +140,7 @@ body::before {
 /* ---------- Home intro ---------- */
 .home-info {
   min-height: 0;
-  margin: 3.5rem 0 3rem;
+  margin: 3.5rem 0 3.5rem;
 }
 
 .home-info .entry-header {
@@ -147,16 +149,16 @@ body::before {
 }
 
 .home-info .entry-header h1 {
-  font-size: clamp(2.25rem, 5.5vw, 3.5rem);
+  font-size: clamp(2rem, 4.5vw, 2.625rem);
   font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.035em;
-  max-width: 16ch;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
 }
 
 .home-info .entry-content {
-  margin-top: 1.25rem;
-  max-width: 46ch;
+  margin-top: 1rem;
+  max-width: 34em;
   font-family: var(--font-body);
   font-size: 1.125rem;
   line-height: 1.6;
@@ -176,16 +178,12 @@ body::before {
   color: var(--signal);
 }
 
-/* ---------- Post list as a timeline ---------- */
+/* ---------- Post list as a timeline ----------
+   Titles share the intro's left edge. On wide screens the dates and the rail
+   hang in the margin; on narrower ones the date sits above the title. */
 .post-entry {
-  display: grid;
-  grid-template-columns: var(--date-col) 1fr;
-  grid-template-rows: auto 1fr;
-  grid-template-areas:
-    "meta header"
-    "meta content";
-  column-gap: 2rem;
-  align-items: start;
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0 0 2.5rem;
   background: none;
@@ -205,7 +203,7 @@ body::before {
   position: absolute;
   top: 0;
   bottom: 0;
-  left: calc(var(--date-col) + 1rem);
+  left: var(--rail-x);
   width: 1px;
   background: var(--rule);
 }
@@ -215,7 +213,7 @@ body::before {
   content: "";
   position: absolute;
   top: 0.55rem;
-  left: calc(var(--date-col) + 1rem - 5px);
+  left: calc(var(--rail-x) - 5px);
   width: 11px;
   height: 11px;
   border-radius: 50%;
@@ -231,11 +229,6 @@ body::before {
   background: var(--signal);
 }
 
-.post-entry .entry-header {
-  grid-area: header;
-  padding-left: 0.5rem;
-}
-
 .post-entry .entry-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
@@ -249,8 +242,6 @@ body::before {
 }
 
 .post-entry .entry-content {
-  grid-area: content;
-  padding-left: 0.5rem;
   margin: 0.5rem 0 0;
   font-family: var(--font-body);
   font-size: 1rem;
@@ -260,11 +251,14 @@ body::before {
 }
 
 .post-entry .entry-footer {
-  grid-area: meta;
+  position: absolute;
+  top: 0.3rem;
+  right: calc(100% - var(--rail-x) + 1rem);
+  width: var(--date-col);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  padding-top: 0.3rem;
+  margin: 0;
   font-size: 0.875rem;
   color: var(--muted);
   text-align: right;
@@ -286,10 +280,10 @@ body::before {
 }
 
 .post-title {
-  font-size: clamp(2rem, 5vw, 2.85rem);
+  font-size: clamp(2rem, 4.5vw, 2.625rem);
   font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.035em;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
   text-wrap: balance;
 }
 
@@ -333,11 +327,6 @@ body::before {
   color: var(--ink);
 }
 
-.post-content p,
-.post-content li {
-  max-width: 68ch;
-}
-
 .post-content h2,
 .post-content h3,
 .post-content h4 {
@@ -347,13 +336,13 @@ body::before {
 }
 
 .post-content h2 {
-  font-size: 1.75rem;
+  font-size: 1.625rem;
   font-weight: 800;
   margin: 3rem 0 1rem;
 }
 
 .post-content h3 {
-  font-size: 1.3rem;
+  font-size: 1.3125rem;
   font-weight: 700;
   margin: 2.25rem 0 0.75rem;
 }
@@ -493,40 +482,32 @@ body::before {
   font-size: 0.8125rem;
 }
 
-/* ---------- Small screens: rail on the left, date above title ---------- */
-@media (max-width: 640px) {
-  .post-entry {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    grid-template-areas:
-      "meta"
-      "header"
-      "content";
-    padding-left: 1.75rem;
-  }
-
+/* ---------- No room for the margin: date above the title ---------- */
+@media (max-width: 1099px) {
   .post-entry::before {
-    left: 0.3rem;
+    display: none;
   }
 
   .post-entry::after {
-    left: calc(0.3rem - 5px);
-    top: 0.35rem;
+    top: 0.45rem;
+    left: 0;
+    width: 9px;
+    height: 9px;
   }
 
   .post-entry .entry-footer {
+    position: static;
+    order: -1;
+    width: auto;
     flex-direction: row;
     gap: 1rem;
     align-items: baseline;
+    padding: 0 0 0.35rem 1.25rem;
     text-align: left;
-    padding: 0 0 0.35rem;
   }
+}
 
-  .post-entry .entry-header,
-  .post-entry .entry-content {
-    padding-left: 0;
-  }
-
+@media (max-width: 640px) {
   .post-content {
     font-size: 1.0625rem;
   }
