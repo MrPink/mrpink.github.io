@@ -1,8 +1,8 @@
-# mrpink-vulncheck.github.io
+# mrpink.github.io
 
 Personal tech blog on security, DevOps and SRE. Built with [Hugo](https://gohugo.io/) and the [PaperMod](https://github.com/adityatelange/hugo-PaperMod) theme, and deployed to GitHub Pages by GitHub Actions.
 
-Live at <https://mrpink-vulncheck.github.io/>
+Live at <https://mrpink.github.io/>
 
 ## Setup
 

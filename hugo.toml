@@ -1,4 +1,4 @@
-baseURL = "https://mrpink-vulncheck.github.io/"
+baseURL = "https://mrpink.github.io/"
 locale = "en-us"
 title = "mrpink"
 enableRobotsTXT = true
