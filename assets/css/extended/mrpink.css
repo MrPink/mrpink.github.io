@@ -35,8 +35,9 @@
   --paper: #EEF1F5;
   --ink: #1A2033;
   --muted: #5B6478;
-  --rule: #C9D0DC;
-  --signal: #D6336C;
+  --rule: #C9D0DC;       /* decorative lines only */
+  --control: #7C859A;    /* borders of inputs and pills: 3:1 against paper */
+  --signal: #B0245A;     /* 5.7:1 against paper, safe for text */
   --signal-soft: rgba(214, 51, 108, 0.14);
   --code-ink: #1A2033;
 
@@ -47,8 +48,6 @@
   /* One column for header, intro, list and posts: ~75 characters of body text */
   --main-width: 720px;
   --nav-width: 720px;
-  --date-col: 7rem;
-  --rail-x: -1.5rem; /* timeline rail, measured from the text edge */
   --radius: 4px;
 
   /* PaperMod variables mapped onto the palette */
@@ -68,6 +67,7 @@
   --ink: #E6E9F0;
   --muted: #98A0B3;
   --rule: #2C3350;
+  --control: #646E91;
   --signal: #FF6F9E;
   --signal-soft: rgba(255, 111, 158, 0.16);
   --code-ink: #0B0E1A;
@@ -169,6 +169,19 @@ body::before {
   margin-top: 1.25rem;
 }
 
+.social-icons {
+  margin-inline-start: -11px;
+}
+
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0;
+}
+
 .social-icons a svg {
   width: 22px;
   height: 22px;
@@ -178,9 +191,8 @@ body::before {
   color: var(--signal);
 }
 
-/* ---------- Post list as a timeline ----------
-   Titles share the intro's left edge. On wide screens the dates and the rail
-   hang in the margin; on narrower ones the date sits above the title. */
+/* ---------- Post list ----------
+   Everything shares the intro's left edge: date line, then title, then summary. */
 .post-entry {
   display: flex;
   flex-direction: column;
@@ -197,38 +209,6 @@ body::before {
   transform: none;
 }
 
-/* The rail */
-.post-entry::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: var(--rail-x);
-  width: 1px;
-  background: var(--rule);
-}
-
-/* The marker */
-.post-entry::after {
-  content: "";
-  position: absolute;
-  top: 0.55rem;
-  left: calc(var(--rail-x) - 5px);
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-  background: var(--paper);
-  border: 2px solid var(--signal);
-  box-sizing: border-box;
-}
-
-/* Newest post gets a filled marker */
-.post-entry:not(.post-entry ~ .post-entry)::after,
-.post-entry:hover::after,
-.post-entry:focus-within::after {
-  background: var(--signal);
-}
-
 .post-entry .entry-header h2 {
   font-size: 1.5rem;
   font-weight: 700;
@@ -239,6 +219,9 @@ body::before {
 
 .post-entry:hover .entry-header h2 {
   color: var(--signal);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.2em;
 }
 
 .post-entry .entry-content {
@@ -251,17 +234,14 @@ body::before {
 }
 
 .post-entry .entry-footer {
-  position: absolute;
-  top: 0.3rem;
-  right: calc(100% - var(--rail-x) + 1rem);
-  width: var(--date-col);
+  order: -1;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  margin: 0;
+  flex-wrap: wrap;
+  gap: 0 1rem;
+  align-items: baseline;
+  margin: 0 0 0.35rem;
   font-size: 0.875rem;
   color: var(--muted);
-  text-align: right;
 }
 
 .post-entry .entry-footer time {
@@ -430,7 +410,7 @@ body::before {
 /* Tags */
 .post-tags a {
   background: none;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--control);
   border-radius: 999px;
   font-size: 0.875rem;
 }
@@ -454,7 +434,7 @@ body::before {
 /* ---------- Taxonomy, search, footer ---------- */
 .terms-tags a {
   background: none;
-  border: 1px solid var(--rule);
+  border: 1px solid var(--control);
   border-radius: 999px;
 }
 
@@ -465,7 +445,7 @@ body::before {
 
 #searchbox input {
   background: var(--paper);
-  border: 1px solid var(--rule);
+  border: 1px solid var(--control);
   border-radius: var(--radius);
   font-family: var(--font-ui);
 }
@@ -480,31 +460,6 @@ body::before {
 
 .footer {
   font-size: 0.8125rem;
-}
-
-/* ---------- No room for the margin: date above the title ---------- */
-@media (max-width: 1099px) {
-  .post-entry::before {
-    display: none;
-  }
-
-  .post-entry::after {
-    top: 0.45rem;
-    left: 0;
-    width: 9px;
-    height: 9px;
-  }
-
-  .post-entry .entry-footer {
-    position: static;
-    order: -1;
-    width: auto;
-    flex-direction: row;
-    gap: 1rem;
-    align-items: baseline;
-    padding: 0 0 0.35rem 1.25rem;
-    text-align: left;
-  }
 }
 
 @media (max-width: 640px) {
